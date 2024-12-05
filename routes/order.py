@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from models import Order, User, Product
 from datetime import datetime
+from peewee import *
 
 # Blueprintの作成
 order_bp = Blueprint('order', __name__, url_prefix='/orders')
@@ -9,6 +10,25 @@ order_bp = Blueprint('order', __name__, url_prefix='/orders')
 @order_bp.route('/')
 def list():
     orders = Order.select()
+
+
+    #query = (Order
+    #     .select(Product, fn.Sum(Product.price).alias('user_total'))
+    #     .join(Product)
+    #     .group_by(User))
+    
+    #print(query)
+    #for user in query:
+    #    print(user.name)
+    #    print(user.user_total)
+    query = (Order
+         .select(Order, fn.SUM(Product.price).alias('user_sum'))
+         .join(Product, JOIN.LEFT_OUTER)
+         .group_by(Order.user))
+    print(query)
+    for order in query:
+        print(order.user.name, 'has Order summary', order.user_sum, 'times')
+
     return render_template('order_list.html', title='注文一覧', items=orders)
 
 
