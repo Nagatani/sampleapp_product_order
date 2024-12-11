@@ -7,9 +7,6 @@ __pycache__/
 #  そこまでの内容を講義でやらないためここに追加しておきます。
 .DS_Store
 
-# 作成されるSQLiteデータベースのファイル
-*.db
-
 # C extensions
 *.so
 

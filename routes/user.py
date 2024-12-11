@@ -11,7 +11,7 @@ def list():
     # データ取得
     users = User.select()
 
-    return render_template('user_list.html', title='ユーザー一覧', items=users)
+    return render_template('user_list.html', title='顧客一覧', items=users)
 
 
 @user_bp.route('/add', methods=['GET', 'POST'])

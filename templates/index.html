@@ -1,16 +1,154 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-    <meta charset="UTF-8">
-    <title>データ一覧</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='base-style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <h1>index</h1>
-    <ul>
-      <li><a href="{{ url_for('user.list') }}">ユーザーリスト</a></li>
-      <li><a href="{{ url_for('product.list') }}">製品リスト</a></li>
-      <li><a href="{{ url_for('order.list') }}">注文リスト</a></li>
-    </ul>
+  <main>
+    <section class="sidebar">
+      <h1>製品売上管理</h1>
+      <menu>
+        <li>&nbsp;売上管理</li>
+        <li><a href="{{ url_for('order.add') }}">新規登録</a></li>
+        <li><a href="{{ url_for('order.list') }}">売上一覧</a></li>
+
+        <li>&nbsp;顧客情報</li>
+        <li><a href="{{ url_for('user.add') }}">新規顧客登録</a></li>
+        <li><a href="{{ url_for('user.list') }}">顧客リスト</a></li>
+
+        <li>&nbsp;自社製品情報</li>
+        <li><a href="{{ url_for('product.add') }}">新規製品登録</a></li>
+        <li><a href="{{ url_for('product.list') }}">製品リスト</a></li>
+      </menu>
+    </section>
+    <section class="current_summary">
+      <h3>今月の製品別売り上げ</h3>
+      <canvas id="product_summary_chart"></canvas>
+    </section>
+    <section class="user_ranking">
+      <h3>顧客ランキング（TOP5）</h3>
+      <canvas id="user_ranking_chart" width="300" height="300"></canvas>
+    </section>
+    <section class="ym_summary">
+      <h3>月別総売り上げ</h3>
+      <canvas id="ym_summary_chart"></canvas>
+    </section>
+  </main>
+  <script>
+    const product_summary_chart = document.getElementById('product_summary_chart');
+
+    fetch('/api/month_total_by_product')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+
+        new Chart(product_summary_chart, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              axis: 'y',
+              label: '売り上げ(円)',
+              data: data.data,
+              fill: false,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+              ],
+              borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+              ],
+              borderWidth: 1
+
+            }]
+          },
+          options: {
+            responsive: true,
+            indexAxis: 'y',
+            scales: {
+              x: {
+                beginAtZero: true
+              }
+            }
+          }
+        })
+      })
+
+
+    const user_ranking_chart = document.getElementById('user_ranking_chart');
+
+    fetch('/api/user_ranking')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+
+        new Chart(user_ranking_chart, {
+          type: 'doughnut',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              data: data.data,
+              borderWidth: 1
+
+            }]
+          },
+          options: {
+            responsive: true,
+             plugins: {
+                legend: {
+                  position: 'right'
+                }
+             }
+          }
+        })
+      })
+
+
+    const ym_summary_chart = document.getElementById('ym_summary_chart');
+
+    fetch('/api/ym_summary')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+
+        new Chart(ym_summary_chart, {
+          type: 'line',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: '売り上げ(円)',
+              data: data.data,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        })
+      })
+  </script>
 </body>
+
 </html>

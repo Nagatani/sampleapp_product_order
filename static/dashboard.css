@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+}
+
+main {
+  display: grid;
+  grid-template: 
+      "sidebar product user" 450px
+      "sidebar order   order" auto
+      / 200px 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.sidebar ,
+.current_summary ,
+.user_ranking ,
+.ym_summary {
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px rgba(0,0,0, 0.24) solid;
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+.sidebar h1 {
+  margin-top: 0;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+menu {
+  margin: 0 -0.5rem;
+  padding: 0;
+  list-style: none;
+}
+menu li a {
+	display: block;
+	padding: .4em .8em;
+	text-decoration: none;
+	background: #fff;
+	color: #333;
+	text-align: left;
+	margin: .2em 0;
+}
+menu li a:hover {
+	background: #eee;
+}
+
+.current_summary {
+  grid-area: product;
+}
+.user_ranking {
+  grid-area: user;
+}
+.ym_summary {
+  grid-area: order;
+}
+#current_summary {
+  max-height: fit-content;
+}
+#user_ranking_chart {
+  max-height: 369px;
+}
+
+section h3 {
+  margin: 0;
+}

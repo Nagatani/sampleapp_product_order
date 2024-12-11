@@ -14,7 +14,7 @@
     </ul>
     
     <form action="{{ url_for('order.add') }}" method="post">
-        <label>ユーザー: 
+        <label>顧客: 
             <select name="user_id" required>
                 {% for user in users %}
                     <option value="{{ user.id }}">{{ user.name }}</option>
@@ -28,6 +28,7 @@
                 {% endfor %}
             </select>
         </label><br>
+        <label>注文日: <input type="date" name="order_date" required></label><br>
         <button type="submit">追加</button>
     </form>
 </body>

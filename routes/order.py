@@ -10,25 +10,6 @@ order_bp = Blueprint('order', __name__, url_prefix='/orders')
 @order_bp.route('/')
 def list():
     orders = Order.select()
-
-
-    #query = (Order
-    #     .select(Product, fn.Sum(Product.price).alias('user_total'))
-    #     .join(Product)
-    #     .group_by(User))
-    
-    #print(query)
-    #for user in query:
-    #    print(user.name)
-    #    print(user.user_total)
-    query = (Order
-         .select(Order, fn.SUM(Product.price).alias('user_sum'))
-         .join(Product, JOIN.LEFT_OUTER)
-         .group_by(Order.user))
-    print(query)
-    for order in query:
-        print(order.user.name, 'has Order summary', order.user_sum, 'times')
-
     return render_template('order_list.html', title='注文一覧', items=orders)
 
 
@@ -37,7 +18,7 @@ def add():
     if request.method == 'POST':
         user_id = request.form['user_id']
         product_id = request.form['product_id']
-        order_date = datetime.now()
+        order_date = request.form['order_date'] # datetime.now()
         Order.create(user=user_id, product=product_id, order_date=order_date)
         return redirect(url_for('order.list'))
     
@@ -55,6 +36,7 @@ def edit(order_id):
     if request.method == 'POST':
         order.user = request.form['user_id']
         order.product = request.form['product_id']
+        order.date = request.form['order_date']
         order.save()
         return redirect(url_for('order.list'))
 
