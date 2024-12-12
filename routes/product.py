@@ -37,3 +37,18 @@ def edit(product_id):
         return redirect(url_for('product.list'))
 
     return render_template('product_edit.html', product=product)
+
+
+@product_bp.route('/delete/<int:product_id>', methods=['GET', 'POST'])
+def delete(product_id):
+    product = Product.get_or_none(Product.id == product_id)
+    if not product:
+        return redirect(url_for('product.list'))
+
+    if request.method == 'POST':
+        product.name = request.form['name']
+        product.price = request.form['price']
+        product.save()
+        return redirect(url_for('product.list'))
+
+    return render_template('product_edit.html', product=product, mode='delete')

@@ -13,10 +13,18 @@
         <li>顧客編集</li>
     </ul>
 
+    {% if mode == "delete" %}
+    <form action="{{ url_for('user.delete', user_id=user.id) }}" method="post">
+        <label>名前: <input type="text" name="name" value="{{ user.name }}" disabled></label><br>
+        <label>年齢: <input type="number" name="age" value="{{ user.age }}" disabled></label><br>
+        <button type="submit">削除</button>
+    </form>
+    {% else %}
     <form action="{{ url_for('user.edit', user_id=user.id) }}" method="post">
         <label>名前: <input type="text" name="name" value="{{ user.name }}" required></label><br>
         <label>年齢: <input type="number" name="age" value="{{ user.age }}" required></label><br>
         <button type="submit">保存</button>
     </form>
+    {% endif %}
 </body>
 </html>

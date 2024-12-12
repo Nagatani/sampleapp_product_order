@@ -12,7 +12,26 @@
         <li><a href="{{ url_for('order.list') }}">注文一覧</a></li>
         <li>注文の編集</li>
     </ul>
+    {% if mode == "delete" %}
+    <form action="{{ url_for('order.delete', order_id=order.id) }}" method="post">
 
+        <label>顧客: 
+            <select name="user_id" disabled>
+                {% for user in users %}
+                    <option value="{{ user.id }}" {% if order.user.id == user.id %}selected{% endif %}>{{ user.name }}</option>
+                {% endfor %}
+            </select>
+        </label><br>
+        <label>製品: 
+            <select name="product_id" disabled>
+                {% for product in products %}
+                    <option value="{{ product.id }}" {% if order.product.id == product.id %}selected{% endif %}>{{ product.name }}</option>
+                {% endfor %}
+            </select>
+        </label><br>
+        <label>注文日: <input type="date" name="order_date" value="{{ order.order_date.date() }}" disabled></label><br>
+        <button type="submit">削除</button>
+    {% else %}
     <form action="{{ url_for('order.edit', order_id=order.id) }}" method="post">
         <label>顧客: 
             <select name="user_id" required>
@@ -28,8 +47,9 @@
                 {% endfor %}
             </select>
         </label><br>
-        <label>注文日: <input type="date" name="order_date" value="{{ order.order_date }}" required></label><br>
+        <label>注文日: <input type="date" name="order_date" value="{{ order.order_date.date() }}" required></label><br>
         <button type="submit">保存</button>
+    {% endif %}
     </form>
 </body>
 </html>

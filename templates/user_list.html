@@ -24,7 +24,8 @@
         <tbody>
             {% for user in items %}
             <tr>
-                <td><a href="{{ url_for('user.edit', user_id=user.id) }}">編集</a></td>
+                <td><a href="{{ url_for('user.edit', user_id=user.id) }}">編集</a> | 
+                    <a href="{{ url_for('user.delete', user_id=user.id) }}">削除</a></td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.age }}</td>
             </tr>

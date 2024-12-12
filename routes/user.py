@@ -39,3 +39,16 @@ def edit(user_id):
         return redirect(url_for('user.list'))
 
     return render_template('user_edit.html', user=user)
+
+
+@user_bp.route('/delete/<int:user_id>', methods=['GET', 'POST'])
+def delete(user_id):
+    user = User.get_or_none(User.id == user_id)
+    if not user:
+        return redirect(url_for('user.list'))
+
+    if request.method == 'POST':
+        user.delete_instance()
+        return redirect(url_for('user.list'))
+
+    return render_template('user_edit.html', user=user, mode='delete')

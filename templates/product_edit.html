@@ -13,10 +13,19 @@
         <li>製品編集</li>
     </ul>
 
+
+    {% if mode == "delete" %}
+    <form action="{{ url_for('product.delete', product_id=product.id) }}" method="post">
+        <label>製品名: <input type="text" name="name" value="{{ product.name }}" disabled></label><br>
+        <label>価格: <input type="number" step="1" name="price" value="{{ product.price }}" disabled></label><br>
+        <button type="submit">削除</button>
+    </form>
+    {% else %}
     <form action="{{ url_for('product.edit', product_id=product.id) }}" method="post">
         <label>製品名: <input type="text" name="name" value="{{ product.name }}" required></label><br>
         <label>価格: <input type="number" step="1" name="price" value="{{ product.price }}" required></label><br>
         <button type="submit">保存</button>
     </form>
+    {% endif %}
 </body>
 </html>
