@@ -35,13 +35,13 @@ menu {
   list-style: none;
 }
 menu li a {
-	display: block;
-	padding: .4em .8em;
-	text-decoration: none;
-	background: #fff;
-	color: #333;
-	text-align: left;
-	margin: .2em 0;
+  display: block;
+  padding: .4em .8em;
+  text-decoration: none;
+  background: #fff;
+  color: #333;
+  text-align: left;
+  margin: .2em 0;
 }
 menu li a:hover {
 	background: #eee;
